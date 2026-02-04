@@ -1,5 +1,5 @@
 {
-  "name": "website-sales-agent",
+  "name": "client-machine",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -11,7 +11,9 @@
   "dependencies": {
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "framer-motion": "^12.31.0",
     "lucide-react": "^0.563.0",
+    "mini-svg-data-uri": "^1.4.4",
     "next": "16.1.6",
     "radix-ui": "^1.4.3",
     "react": "19.2.3",

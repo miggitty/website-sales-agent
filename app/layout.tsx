@@ -9,8 +9,8 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Web Design Lead Generator | Automate Your Sales",
-  description: "The system that finds businesses without websites, builds a demo, and hands you the lead.",
+  title: "The Website Client Machine | Automate Your Web Design Sales",
+  description: "The AI-powered system that finds businesses without websites, builds a demo, and hands you the lead ready to close.",
 };
 
 export default function RootLayout({
@@ -19,9 +19,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
-        className={`${plusJakartaSans.variable} font-sans antialiased bg-[#ECFEFF] text-[#164E63] selection:bg-[#22D3EE] selection:text-white`}
+        className={`${plusJakartaSans.variable} font-sans antialiased selection:bg-indigo-500 selection:text-white`}
+        suppressHydrationWarning
       >
         {children}
       </body>

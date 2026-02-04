@@ -1,4 +1,4 @@
-# WEB DESIGN LEAD GENERATOR
+# THE WEBSITE CLIENT MACHINE
 ## Landing Page Copy (Structured for High Conversion)
 
 ---
@@ -70,7 +70,7 @@ They click the link. See their business looking professional online for the firs
 
 That's not selling. That's helping. And it converts like crazy.
 
-**This is the Web Design Lead Generator.**
+**This is The Website Client Machine.**
 
 ---
 
