@@ -3,6 +3,8 @@
 import { motion } from "framer-motion";
 import { CheckCircle2, Rocket, ArrowRight, Zap, Star, Sparkles } from "lucide-react";
 import Link from "next/link";
+import { CountdownTimer } from "@/components/CountdownTimer";
+import { LAUNCH_DATE_STRING } from "@/lib/config";
 
 export default function ThankYouPage() {
   return (
@@ -64,6 +66,16 @@ export default function ThankYouPage() {
                 You're On the List!
               </motion.h2>
 
+              {/* Countdown Timer */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.35 }}
+                className="mb-8"
+              >
+                <CountdownTimer variant="full" showLabel={true} />
+              </motion.div>
+
               {/* Body Copy - Smaller */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -72,7 +84,7 @@ export default function ThankYouPage() {
                 className="space-y-3 mb-8"
               >
                 <p className="text-base text-slate-400">
-                  We launch in <span className="text-white font-medium">14 days</span>. You'll get an email the moment doors open.
+                  We launch on <span className="text-white font-medium">{LAUNCH_DATE_STRING}</span>. You'll get an email the moment doors open.
                 </p>
 
                 <p className="text-sm text-slate-500">
@@ -139,8 +151,8 @@ export default function ThankYouPage() {
                   <div className="w-12 h-12 mx-auto mb-3 rounded-xl bg-indigo-500/20 flex items-center justify-center">
                     <Rocket className="w-6 h-6 text-indigo-400" />
                   </div>
-                  <div className="text-2xl font-bold text-white">14 days</div>
-                  <div className="text-xs text-slate-400">Until Launch</div>
+                  <div className="text-lg font-bold text-white">{LAUNCH_DATE_STRING}</div>
+                  <div className="text-xs text-slate-400">Launch Date</div>
                 </div>
                 <div className="text-center">
                   <div className="w-12 h-12 mx-auto mb-3 rounded-xl bg-purple-500/20 flex items-center justify-center">

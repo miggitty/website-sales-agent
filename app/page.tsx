@@ -34,6 +34,8 @@ import {
   MousePointerClick
 } from "lucide-react";
 import { motion, useScroll, useTransform, AnimatePresence, useMotionValue, useSpring, useInView } from "framer-motion";
+import { CountdownTimer } from "@/components/CountdownTimer";
+import { LAUNCH_DATE_STRING } from "@/lib/config";
 
 // --- Animated Background Components ---
 
@@ -166,13 +168,33 @@ function WaitlistModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
     email: "",
     phone: ""
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you would typically send the data to your backend
-    console.log("Form submitted:", formData);
-    // Navigate to thank you page
-    router.push("/thank-you");
+    setIsSubmitting(true);
+    setError("");
+
+    try {
+      const response = await fetch("/api/waitlist", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to join waitlist");
+      }
+
+      // Navigate to thank you page on success
+      router.push("/thank-you");
+    } catch {
+      setError("Something went wrong. Please try again.");
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -224,7 +246,7 @@ function WaitlistModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
                     Enter your details to join the waitlist
                   </h2>
                   <p className="text-slate-400">
-                    First 10 spots at $500. Launch in 14 days.
+                    First 10 spots at $500. Launch {LAUNCH_DATE_STRING}.
                   </p>
                 </div>
 
@@ -278,12 +300,19 @@ function WaitlistModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
                     />
                   </div>
 
+                  {error && (
+                    <p className="text-red-400 text-sm text-center bg-red-500/10 border border-red-500/20 rounded-lg py-2 px-3">
+                      {error}
+                    </p>
+                  )}
+
                   <button
                     type="submit"
-                    className="w-full py-4 rounded-xl bg-gradient-to-r from-indigo-600 via-purple-600 to-cyan-600 text-white font-bold text-lg shadow-2xl shadow-indigo-500/25 hover:shadow-indigo-500/40 transition-all flex items-center justify-center gap-3 group"
+                    disabled={isSubmitting}
+                    className="w-full py-4 rounded-xl bg-gradient-to-r from-indigo-600 via-purple-600 to-cyan-600 text-white font-bold text-lg shadow-2xl shadow-indigo-500/25 hover:shadow-indigo-500/40 transition-all flex items-center justify-center gap-3 group disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    <span>Join the Waitlist</span>
-                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                    <span>{isSubmitting ? "Joining..." : "Join the Waitlist"}</span>
+                    {!isSubmitting && <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />}
                   </button>
                 </form>
 
@@ -437,7 +466,7 @@ function InlineCTA({ variant = "default", onOpenModal }: { variant?: "default" |
               </span>
               <span className="flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                14-day launch
+                {LAUNCH_DATE_STRING}
               </span>
             </div>
           </div>
@@ -512,6 +541,14 @@ function Navbar() {
           Website<span className="text-indigo-400">Sales</span>
           <span className="text-cyan-400">Agent</span>
         </motion.div>
+
+        {/* Countdown Timer - Center */}
+        <div className="hidden lg:flex items-center">
+          <div className="px-4 py-1.5 rounded-full bg-gradient-to-r from-indigo-500/10 to-cyan-500/10 border border-indigo-500/20">
+            <CountdownTimer variant="header" />
+          </div>
+        </div>
+
         <div className="hidden md:flex items-center gap-6">
           <a href="#how-it-works" className="text-sm text-slate-400 hover:text-white transition-colors">How It Works</a>
           <a href="#pricing" className="text-sm text-slate-400 hover:text-white transition-colors">Pricing</a>
@@ -1568,7 +1605,7 @@ function FinalCTA({ onOpenModal }: { onOpenModal: () => void }) {
               </h2>
 
               <p className="text-xl text-slate-300 mb-4 max-w-2xl mx-auto">
-                Join the waitlist now. We launch in 14 days.
+                Join the waitlist now. We launch {LAUNCH_DATE_STRING}.
               </p>
               <p className="text-lg text-slate-400 mb-10 max-w-2xl mx-auto">
                 First 10 people get access at $500. Everyone else pays $1,000—or waits for the next round.
